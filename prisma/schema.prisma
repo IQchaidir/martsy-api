@@ -19,3 +19,37 @@ model User {
   name      String?
   createdAt DateTime @default(now())
 }
+
+model Product {
+  id String @id @default(cuid())
+
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  slug        String @unique
+  name        String @unique
+  imageURL    String
+  price       Int
+  description String
+  sku         String @unique
+  stock       Int    @default(0)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("products")
+}
+
+model Category {
+  id String @id @default(cuid())
+
+  name     String @unique
+  imageUrl String
+
+  products Product[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("categories")
+}
